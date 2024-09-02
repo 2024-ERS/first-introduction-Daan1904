@@ -6,6 +6,8 @@ format: html
 editor: 
   markdown: 
     wrap: 72
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Working with Quarto documents in R
@@ -15,20 +17,20 @@ editor:
 Working with Quarto has a range of benefits:
 
 -   Using its headers creates an automated outline of your script (see
-    pane to the right), this helps in navigating arround in your script
+    pane to the right), this helps in navigating around in your script
 -   You can mix regular text with R script, for example to introduce the
     philosophy or assumptions of a particular analysis, and/or to
     summarize the conclusions that you draw from the analysis
--   formatting of headers, tables, figure captions etc is
+-   Formatting of headers, tables, figure captions etc is
     near-automatic, you hardly need to think about it
--   it's code chunks forces you to work in a more modular way when
+-   It's code chunks forces you to work in a more modular way when
     developing a script, step by step, task by task
--   the rendered output documents are very nice, can be ready to go as a
+-   The rendered output documents are very nice, can be ready to go as a
     report or publication, even a whole book
--   rendered output can be in all kinds of formats, like docx, pdf,
+-   Rendered output can be in all kinds of formats, like docx, pdf,
     html + it integrates very well with generating content for the
     internet
--   a quarto document is easy to ready even for a normal person 😊
+-   A quarto document is easy to ready even for a normal person 😊
 
 ### 2. Markdown, R Markdown and Quarto
 
@@ -39,9 +41,9 @@ text formatting. Files have the .md extension. For example, the '\#' in
 front of the first line of this document indicates that it is a title,
 and needs to be formatted like that. If you switch this window of this
 text to the tab "visual" you see what happens. Markdown is lightweight
-eg compared to html (how most internet pages are written), which allows
-much more formatting, and makes files practically not readable anymore
-with a regular text editor.
+e.g. compared to html (how most internet pages are written), which
+allows much more formatting, and makes files practically not readable
+anymore with a regular text editor.
 
 Later, Markdown was expanded to R Markdown, which allows to use Markdown
 in the context of an R Script. Files have the .Rmd extension. This
@@ -135,7 +137,7 @@ Some other options for output formats are:
 | docx      | Word file (best for copying to a document, report)    |
 | gfm       | Github-friendly markdown (best for viewing on github) |
 | PDF       | Acrobat PDF (best for distributing)                   |
-| mediawiki | native format for Wikipedia                           |
+| mediawiki | Native format for Wikipedia                           |
 
 Also see this [overview of output
 formats](https://quarto.org/docs/reference/).
@@ -147,8 +149,8 @@ set if you want different aspects as the code itself, the output from
 that code, warnings, etc in the output document.
 
 | Execute option: | Descript                                                                                                                                                                                    |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| eval            | Evaluate the code chunk (if false, just echos the code into the output). echo Include the source code in output                                                                             |
+|----------------|--------------------------------------------------------|
+| eval            | Evaluate the code chunk (if false, just echos the code into the output). Echo includes the source code in output.                                                                           |
 | output          | Include the results of executing the code in the output (true, false, or asis to indicate that the output is raw markdown and should not have any of Quarto’s standard enclosing markdown). |
 | warning         | Include warnings in the output.                                                                                                                                                             |
 | error           | Include errors in the output (note that this implies that errors executing code will not halt processing of the document).                                                                  |
