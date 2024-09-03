@@ -7,7 +7,7 @@ editor:
   markdown: 
     wrap: 72
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: console #-> makes sure that output is always shown in console
 ---
 
 # Working with Quarto documents in R
