@@ -1,0 +1,41 @@
+---
+title: "Test of data importing and plotting"
+author: "Daan Kroeze"
+date: "2024-09-03"
+format: html
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# Data importing and plotting
+
+### 1. Data importing from Google Drive using csv
+
+The data can be imported to R in the best way by using Google Drive and csv files based on url. This is a way to import the data:
+
+```{r}
+#| label: load-libraries
+#| output: false  
+library(tidyverse) # load the tidyverse libraries, including readr
+```
+
+```{r}
+#| label: read-google-sheets-data
+
+FactVegComp_link<-"https://docs.google.com/spreadsheets/d/10kRO-460ljeLI8S7hg9CY4hNIfFA838X5lLfeLePXPw/pub?gid=684946341&single=true&output=csv"
+FactVegComp<-read_csv(FactVegComp_link)
+```
+
+Now lets make a box plot of this data, using the following code (it groups all the separate per-species data into 1 box plot per species, using the different cover percentages):
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: Boxplot of the number of individuals observed for each species. 
+
+ggplot(data=FactVegComp, 
+       mapping=aes(x=Species_ID,y=CoverPerc)) +
+  geom_boxplot()
+```
