@@ -54,10 +54,10 @@ add a regression line through all the years
 #| label: fig-scatterplot
 #| fig-cap: Scatter plot showing the relation between cockle thickness (mm) and length (mm).
 
-FactCockleSize_filtered <- FactCockleSize %>% filter(thickness_mm < 250)
+FactCockleSize_filtered <- FactCockleSize %>% filter(thickness_mm < 250, length_mm > 2.5)
 
 ggplot2::ggplot(data = FactCockleSize_filtered, 
-                mapping = aes(x = thickness_mm, y = length_mm)) + 
+                mapping = aes(x = thickness_mm, y = length_mm, color = factor(year))) + 
   geom_point()
 ```
 
