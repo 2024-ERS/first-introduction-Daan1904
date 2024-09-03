@@ -6,6 +6,8 @@ format: html
 editor: 
   markdown: 
     wrap: 72
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Working with the dplyr and ggplot2 packages
@@ -49,7 +51,14 @@ x) and length (length_mm), showing each year with a different color, and
 add a regression line through all the years
 
 ```{r}
+#| label: fig-scatterplot
+#| fig-cap: Scatter plot showing the relation between cockle thickness (mm) and length (mm).
 
+FactCockleSize_filtered <- FactCockleSize %>% filter(thickness_mm < 250)
+
+ggplot2::ggplot(data = FactCockleSize_filtered, 
+                mapping = aes(x = thickness_mm, y = length_mm)) + 
+  geom_point()
 ```
 
 Further explore the plot with a regression line through all the data
