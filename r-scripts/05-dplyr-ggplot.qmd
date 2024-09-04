@@ -93,7 +93,10 @@ FactCockleSize |> dplyr::filter(thickness_mm > 10 & length_mm < 5)
 
 #Again plot with the two outliers
 FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |>
-  dplyr::filter(CockleObs_ID !=469, CockleObs_ID !=1531)
+  dplyr::filter(CockleObs_ID !=469, CockleObs_ID !=1531) |>
+  dplyr::mutate(year = factor(year))
+
+print(FactCockleSize)
 
 ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
                 mapping = aes(x = length_mm, y = thickness_mm)) +   #what is on the axes
@@ -101,6 +104,7 @@ ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
 ```
 
 Further explore the plot with a regression line through all the data
+Own try:
 
 ```{r}
 #| label: fig-scatterplot2
@@ -112,22 +116,7 @@ ggplot2::ggplot(data = FactCockleSize_filtered,
   geom_smooth(method = lm, se = FALSE)
 ```
 
-Make same plot but showing a separate regression line per year
-Try of myself:
-
-```{r}
-# color the points by year, but plot one regression line
-#| label: fig-scatterplot3
-#| fig-cap: Scatter plot showing the relation between cockle thickness (mm) and length (mm) including 1 regression line.
-
-ggplot2::ggplot(data = FactCockleSize_filtered, 
-                mapping = aes(x = thickness_mm, y = length_mm, color = factor(year))) + 
-  geom_point() +
-  geom_smooth(method = lm, aes(group = 1), se = FALSE)
-```
-
 Lecture explanation later on:
-
 ```{r}
 #Plot the figure including the regression line
 ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
@@ -146,7 +135,34 @@ summary(model_lm)
 #This regression is significant, R2 = 0.8997, P < 0.001 --> R2 = 0.90^***
 ```
 
+```{r}
+ggplot2::ggplot(data = FactCockleSize,
+                mapping = aes(x = length_mm, y = thickness_mm)) +
+  geom_point(mapping = aes(color = year)) +
+  geom_smooth(method = "lm")
+```
+
+
+Make same plot but showing a separate regression line per year
+Try of myself:
+
+```{r}
+# color the points by year, but plot one regression line
+#| label: fig-scatterplot3
+#| fig-cap: Scatter plot showing the relation between cockle thickness (mm) and length (mm) including 1 regression line.
+
+ggplot2::ggplot(data = FactCockleSize_filtered, 
+                mapping = aes(x = thickness_mm, y = length_mm, color = factor(year))) + 
+  geom_point() +
+  geom_smooth(method = lm, aes(group = 1), se = FALSE)
+```
+
+Lecture explanation later on:
+
+
+
 Make a panel plot where with each year is shown as a separate graph
+Own try:
 
 ```{r}
 #| label: fig-scatterplot4
@@ -157,6 +173,7 @@ ggplot2::ggplot(data = FactCockleSize_filtered,
   geom_point() +
   facet_wrap(~ year)
 ```
+
 
 We conclude from this that: \* there were two important outliers in the
 dataset that were removed after visual inspection \* the regression
