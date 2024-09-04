@@ -66,9 +66,16 @@ combidat
 # show in a plot how cockle density changes with elevation
 combidat |>
   ggplot(aes(x=elevation_m, y=n_obs)) +
-  geom_point() +
+  geom_point()
+
 # fit a linear regression
-  geom_smooth(method="loess")
+combidat |>
+  ggplot(aes(x=elevation_m, y=n_obs)) +
+  geom_point() +
+  geom_smooth(method="lm")
+
+model_lm <- lm(n_obs ~ elevation_m, data = combidat)
+summary(model_lm)
 
 
 # predicted at 0.5 m (x)
