@@ -16,7 +16,7 @@ Load the required libraries :
 
 ```{r message = FALSE, warning = FALSE}
 
-#restore your library
+#restore your library (good idea to keep at the start of every script)
 renv::restore()
 
 # clear the R environment
@@ -48,6 +48,9 @@ Read the FactCockleSize table with read_csv, which reads it as tibble
 
 ```{r}
 FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv")
+print(FactCockleSize)
+names(FactCockleSize)
+nrow(FactCockleSize)
 ```
 
 Plot with ggplot the relation between cockle thickness (thickness_mm, as
