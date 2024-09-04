@@ -15,6 +15,10 @@ editor_options:
 Load the required libraries :
 
 ```{r message = FALSE, warning = FALSE}
+
+#restore your library
+renv::restore()
+
 # clear the R environment
 rm(list = ls())
 
