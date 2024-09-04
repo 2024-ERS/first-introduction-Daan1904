@@ -72,7 +72,7 @@ combidat |>
 combidat |>
   ggplot(aes(x=elevation_m, y=n_obs)) +
   geom_point() +
-  geom_smooth(method="lm")
+  geom_smooth(method="lm")    #Graph No.1
 
 model_lm <- lm(n_obs ~ elevation_m, data = combidat)
 summary(model_lm)
@@ -80,8 +80,10 @@ summary(model_lm)
 
 # predicted at 0.5 m (x)
 # y = b0 + b1x   (b0 is intercept and b1 is the slope, x is elevation, y is no cockles
+29.9 - 18.0 * 0.5
 
 # show this model as a line in ggplot, with the confidence interval
+#--> see comment Graph No.1 above
 
 # fit a better model, using a loess smoother
 # show this model in ggplot
