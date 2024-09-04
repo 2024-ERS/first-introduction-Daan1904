@@ -113,6 +113,7 @@ ggplot2::ggplot(data = FactCockleSize_filtered,
 ```
 
 Make same plot but showing a separate regression line per year
+Try of myself:
 
 ```{r}
 # color the points by year, but plot one regression line
@@ -123,6 +124,26 @@ ggplot2::ggplot(data = FactCockleSize_filtered,
                 mapping = aes(x = thickness_mm, y = length_mm, color = factor(year))) + 
   geom_point() +
   geom_smooth(method = lm, aes(group = 1), se = FALSE)
+```
+
+Lecture explanation later on:
+
+```{r}
+#Plot the figure including the regression line
+ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
+                mapping = aes(x = length_mm, y = thickness_mm)) +   #what is on the axes
+  geom_point() +
+  geom_smooth(method = lm)
+
+#Calculate the linear regression coefficients
+model_lm <- lm(thickness_mm ~ length_mm, data = FactCockleSize)
+summary(model_lm)
+
+#Equation: thickness_mm = -0.343 + 0.669*length_mm
+#A cockle of length 20 mm has a predicted width of:
+-0.343 + 0.669 * 20
+
+#This regression is significant, R2 = 0.8997, P < 0.001 --> R2 = 0.90^***
 ```
 
 Make a panel plot where with each year is shown as a separate graph
