@@ -87,10 +87,21 @@ summary(model_lm)
 
 # fit a better model, using a loess smoother
 # show this model in ggplot
+combidat |>
+  ggplot(aes(x=elevation_m, y=n_obs)) +
+  geom_point() +
+  geom_smooth(method="loess")
 
 ##### plot  how the size (as mean length) of cockles changes with  elevation along the transect
 # omit the observations where length is NA (because no cockles were measures)
 # fit a quadratic model (second-order polynomial)
 # show for each point also the standard errors
 # add appropriate labels for the x and y axis 
+combidat |>
+  ggplot(aes(x=elevation_m, y=avg_l)) +
+  geom_point() +
+  geom_smooth(method="lm", formula = y ~ poly(x, 2)) +
+  geom_errorbar(aes(ymin=avg_l-se_l, ymax=avg_l+se_l), width=0.1) +
+  xlab("Elevation (m)") +
+  ylab("Average cockle length (mm)")
 
