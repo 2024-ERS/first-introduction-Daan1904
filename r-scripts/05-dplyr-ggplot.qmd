@@ -57,6 +57,8 @@ Plot with ggplot the relation between cockle thickness (thickness_mm, as
 x) and length (length_mm), showing each year with a different color, and
 add a regression line through all the years
 
+Own first try:
+
 ```{r}
 #| label: fig-scatterplot
 #| fig-cap: Scatter plot showing the relation between cockle thickness (mm) and length (mm).
@@ -65,6 +67,36 @@ FactCockleSize_filtered <- FactCockleSize %>% filter(thickness_mm < 250, length_
 
 ggplot2::ggplot(data = FactCockleSize_filtered, 
                 mapping = aes(x = thickness_mm, y = length_mm, color = factor(year))) + 
+  geom_point()
+```
+
+Try as in the lecture, later on:
+
+```{r}
+ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
+                mapping = aes(x = length_mm, y = thickness_mm)) +   #what is on the axes
+  geom_point()
+
+#There is one very clear outlier, that needs to be removed (data entry mistake)
+FactCockleSize |> dplyr::filter(thickness_mm > 500)
+
+#Very specifically filter that one outlier
+FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |>
+  dplyr::filter(CockleObs_ID != 1531)
+
+ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
+                mapping = aes(x = length_mm, y = thickness_mm)) +   #what is on the axes
+  geom_point()
+
+#It now appears that there is another outlier, filter again
+FactCockleSize |> dplyr::filter(thickness_mm > 10 & length_mm < 5)
+
+#Again plot with the two outliers
+FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |>
+  dplyr::filter(CockleObs_ID !=469, CockleObs_ID !=1531)
+
+ggplot2::ggplot(data = FactCockleSize,   #what data is to be used
+                mapping = aes(x = length_mm, y = thickness_mm)) +   #what is on the axes
   geom_point()
 ```
 
