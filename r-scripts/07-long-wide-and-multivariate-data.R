@@ -14,14 +14,22 @@ library(tidyverse)
 vdat<-read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSJFU7gDlXuBM6hgWwcYJ-c_ofNdeqBe50_lDCEWO5Du3K7kPUDRh_esyKuHpoF_GbmBAoT4ZygrGWq/pub?gid=2036214007&single=true&output=csv")
 
 # show the variables in the dataset 
+names(vdat)
 
-# show in which unique years  data were recordedunique(vdat$year)
+# show in which unique years data were recorded
+vdat$year               #Showing all year 'observations'
+unique(vdat$year)       #Only showing unique years once
 
 # reshape the data using tidyr piping from wide to long format, where species is a single variable instead of distributed over multiple columns, treat bare, litter and moss as if they are species (see the "data import cheatsheet")
 # remove Salicornia.europaea and Salicornia.procumbens from the dataset
 # as Salicornia.sp is their sum (the 2 species where not separated in earlier years)
 # also remove the variables bare,litter,mosses 
-
+vdat1 <- vdat |>
+  tidyr::pivot_longer(-c(year, TransectPoint_ID),        #-c means: not these variables
+                         names_to = "Species_ID",        # name of the species variable
+                         values_to = "cover") |>         # name of the abundance variable
+  dplyr::filter(!Species_ID %in% c("bare", "litter", "mosses", 
+                                   "SalicEur", "SalicPro"))    #The exclamation mark ! means: do NOT this --> opposite
 
 #show the names of all the species in the dataset
 
