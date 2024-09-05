@@ -32,19 +32,32 @@ vdat1 <- vdat |>
                                    "SalicEur", "SalicPro"))    #The exclamation mark ! means: do NOT this --> opposite
 
 #show the names of all the species in the dataset
+unique(vdat1$Species_ID)
 
 
 # find the most abundant species in the dataset
 # add a variable to the dataset that is the rank number of the species 
 # according to summed abundance of each species over
 # the whole dataset (1=most abundant species)
+vdat2 <- vdat1 |>
+  dplyr::group_by(Species_ID) |>
+  dplyr::summarise(sumcov = sum(cover, na.rm = TRUE)) |>
+  dplyr::mutate(rank = rank(-sumcov)) |>
+  dplyr::arrange(rank)
 
+#merge the files
+vdat3 <- left_join(vdat1, vdat2, by = "Species_ID")
 
 ### plot the 5 most dominant species as a line diagram, cover (y) versus distance_m (x)with ggplot, separate plot for each year, each species with a different line color
 
 # plot the change in cover along the distance  transect 
 # and over the different years as a heatmap for the 10 most abundant species
 # (using ggplot),separate heatmap plot per species
+vdat3 |> dplyr::filter(rank <= 10) |>
+  ggplot(aes(x=factor(TransectPoint_ID), y=factor(-year), fill = cover)) +
+    geom_tile() +
+    scale_fill_gradient(low = "yellow", high = "red") +
+    facet_wrap(~Species_ID, ncol = 2)
 
 
 # load the elevation data from 2017-2020, 
