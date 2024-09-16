@@ -29,7 +29,10 @@ elevdat
 
 # join  the elevation with  the orchestia data by year and TransectPoint_ID, and filter to retain only transect points between 200 and 1000 (where it lives)
 # make year a factor
-orchdat3<-left_join()
+names(orchdat)
+names(elevdat)
+orchdat3<-left_join(orchdat, elevdat, by = c("year", "TransectPoint_ID"))
+orchdat3
 
 # explore how Orchestia abundance changes along the transect in a bar plot
 
