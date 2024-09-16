@@ -11,10 +11,14 @@ library(tidyverse)
 
 # read the macrodetritivore abundance data, call the dataset orchdat
 # filter to use only years 2018,2019,2021,2022,2023,2024 and only 3 or less replicates and species Orchestia_gammarellus
-# group by year and Distance_ID
+# group by year and TransectPoint_ID
 # calculate the sum of the number of Orchestia found per year and TransectPoint
 # do all the above in one pipeline
-orchdat<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vT6bdROUwchBBIreCQQdBenu35D5Heo8bl3UgES9wrpBwax_GUM1bKSo_QXfmLq8Ml9-crCI7MmW2XH/pub?gid=615066255&single=true&output=csv") 
+orchdat<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vT6bdROUwchBBIreCQQdBenu35D5Heo8bl3UgES9wrpBwax_GUM1bKSo_QXfmLq8Ml9-crCI7MmW2XH/pub?gid=615066255&single=true&output=csv") |>
+  dplyr::filter(year %in% c(2018,2019,2021:2024), replicate <= 3, 
+                Species_ID == "Orchestia_gammarellus") |> #single = means 'assign', double = indicates logical test (T/F)
+  dplyr::group_by(year, TransectPoint_ID) |>
+  dplyr::summarise(CountSum = sum(Count, na.rm = TRUE))
 
 
 # read the macrotransect elevation data, filter and select right variables
