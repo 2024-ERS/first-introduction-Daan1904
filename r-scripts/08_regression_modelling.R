@@ -58,16 +58,21 @@ p1
 
 # calculate the optimal preferred elevation by Orchestia for each year using weighted.mean function
 orchdat3 |>
+  group_by(year) |>
+  summarise(wa_elevation = weighted.mean(x = elevation_m, w = CountSum, na.rm = TRUE))
 
 ## explore response to elevation and year as a linear model, call this m1
 # first only elevation (not yet year)
 orchdat3
-m1<-lm()
-  
-#add the linear model to the plot
+m1<-lm(CountSum ~ elevation_m, data = orchdat3)
+m1
 
-  
-# fitmodel  m2 by adding a quadratic term for elevation_m to check for an ecological optimum
+#add the linear model to the plot
+orchdat3$pred1 <- predict(m1)
+p2 <- p1 + geom_line(data = orchdat3, aes(y = pred1), col = "black", linewidth = 1.2)
+p2
+
+# fit model m2 by adding a quadratic term for elevation_m to check for an ecological optimum
 # y=b0 + b1x1 + b2x1^2
 
 #add the linear model to the plot
