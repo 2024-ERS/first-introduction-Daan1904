@@ -31,7 +31,9 @@ elevdat
 # make year a factor
 names(orchdat)
 names(elevdat)
-orchdat3<-left_join(orchdat, elevdat, by = c("year", "TransectPoint_ID"))
+orchdat3<-left_join(orchdat, elevdat, by = c("year", "TransectPoint_ID")) |>
+  dplyr::filter(TransectPoint_ID >= 200 & TransectPoint_ID <= 1000) |>
+  dplyr::filter(!(year == 2022 & TransectPoint_ID == 260)) # ! means everything, except ...
 orchdat3
 
 # explore how Orchestia abundance changes along the transect in a bar plot
