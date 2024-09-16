@@ -37,13 +37,24 @@ orchdat3<-left_join(orchdat, elevdat, by = c("year", "TransectPoint_ID")) |>
 orchdat3
 
 # explore how Orchestia abundance changes along the transect in a bar plot
-
+orchdat3 |>
+  ggplot2::ggplot(mapping = aes(x = factor(TransectPoint_ID), y = CountSum, 
+                                group = year)) +
+  geom_bar(stat = "identity") + #identity -> just uses the values as they are in the data, no statistics involved
+  facet_grid(year ~.) #what is in rows ~ what is in columns
 
 # explore how elevation changes along the transect in a barplot
-
+orchdat3 |>
+  ggplot2::ggplot(mapping = aes(x = factor(TransectPoint_ID), y = elevation_m, 
+                                group = year)) +
+  geom_bar(stat = "identity") + #identity -> just uses the values as they are in the data, no statistics involved
+  facet_grid(year ~.) #what is in rows ~ what is in columns
   
 # plot Orchestia (y) versus elevation_m (x) in ggplot as a scatterplot, with each year as a different color
 p1<- orchdat3  |> 
+  ggplot2::ggplot(mapping = aes(x = elevation_m, y = CountSum, col = factor(year))) +
+  geom_point(size = 3)
+p1
 
 # calculate the optimal preferred elevation by Orchestia for each year using weighted.mean function
 orchdat3 |>
