@@ -1,6 +1,8 @@
 # Multiple regression in a glm context: calculation and plotting
 # Q: How does the distribution along the gradient of Orchestia change between years?
 
+renv::restore()
+
 # clear everything in memory (of R)
 remove(list=ls())
 
