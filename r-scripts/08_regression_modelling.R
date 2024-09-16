@@ -73,12 +73,15 @@ p2 <- p1 + geom_line(data = orchdat3, aes(y = pred1), col = "black", linewidth =
 p2
 
 # fit model m2 by adding a quadratic term for elevation_m to check for an ecological optimum
-# y=b0 + b1x1 + b2x1^2
+# y=b0 + b1x + b2*I(x^2) #Expect that b2 will be negative!
+m2 <- lm(CountSum ~ elevation_m + I(elevation_m^2), data = orchdat3)
+m2
 
 #add the linear model to the plot
 # calculate the predicted value of m2 for every observation, add to the dataset as a variable as pred2
 # add the new predicted line to the previous plot p2, store as object p3 and show it
-
+orchdat3$pred2 <- predict(m2)
+p2 + geom_line(data = orchdat3, aes(y = pred2), col = "red", linewidth = 1.2)
   
 # test if the new model m2   significantly explains more variation than the first model m1
 
