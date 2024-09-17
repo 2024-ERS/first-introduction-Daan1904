@@ -188,16 +188,24 @@ orchdat3$pred6 <- predict(m6, type = "response")
 p1 + geom_line(data = orchdat3, aes(y = pred6), linewidth = 1.2)
 
 # better than the previous?
-
+anova(m6, m5)
 
 # add the interaction to the model: elevation + elevation ^2 + year + elevation*year
 # now test and show  the effect of both elevation + year
+m7 <- glm(CountSum ~ elevation_m + I(elevation_m^2) + factor(year) + 
+           elevation_m*factor(year),
+          family = poisson(log),
+          data = orchdat3)
+
+anova(m7, "Chisq")
+anova(m7, m6)
 
 
 #add the  model to the plot
 # calculate the predicted value of m2 for every observation, add to the dataset as a variable as pred2
 # add the new predicted line to the previous plot p2, store as object p3 and show it
-
+orchdat3$pred7 <- predict(m7, type = "response")
+p1 + geom_line(data = orchdat3, aes(y = pred7, col = factor(year)), linewidth = 1.2)
 
 
 
