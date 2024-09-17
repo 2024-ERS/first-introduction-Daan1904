@@ -49,6 +49,16 @@ p1
 
 # calculate the frequency (as a proportion) of occurrence of each species 
 # in 2023, and sort according to frequency
+dat3 <- dat1 |>
+  dplyr::filter(presence == 1) |>
+  mutate(speciesnum = -as.numeric(factor(species)))
+
+p2 <- ggplot(data = dat3, aes(x = Point_ID, y = speciesnum, col = species)) +
+  geom_point(size = 2)
+p2
+
+p2 + p1 + patchwork::plot_layout(ncol = 1)
+
 
 ####### select Limonium vulgare and analyze and plot its response to elevation
 
