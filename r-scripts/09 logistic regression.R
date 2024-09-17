@@ -61,13 +61,38 @@ p2 + p1 + patchwork::plot_layout(ncol = 1)
 
 
 ####### select Limonium vulgare and analyze and plot its response to elevation
-
+specsel <- "Limonium.vulgare"
+p3 <- dat1 |> 
+  dplyr::filter(species == specsel) |>
+  ggplot(aes(x = elevation_m, y = presence)) +
+  geom_point(shape = "|") +
+  ggtitle(specsel)
+p3
 
 # calculate a logistic regression (also test quadratic term)
 # this is a generalized linear model with logit link and bionomial distribtion
-
+m1 <- dat1 |>
+  dplyr::filter(species == specsel) |>
+  glm(presence ~ elevation_m, family = binomial(link = logit), data = _)
 
 # save the predicted values of this model (probability of occurrence) as a variable
+dat1 <- dat1 |>
+  dplyr::mutate(predicted = ifelse(species == specsel, predict(m1, type = "response"), NA))
+
+p3 + geom_line(data = dat1 |> dplyr::filter(!is.na(predicted)),
+               aes(y = predicted, col = species), linewidth = 1.2)
+
+# test for quadratic effect
+m2 <- dat1 |>
+  dplyr::filter(species == specsel) |>
+  glm(presence ~ elevation_m + I(elevation_m^2), family = binomial(link = logit), data = _)
+
+anova(m2, m1, "Chisq")
+# this second model is not significantly better, but still plot for fun
+dat1 <- dat1 |>
+  dplyr::mutate(predicted = ifelse(species == specsel, predict(m2, type = "response"), NA))
+p3 + geom_line(data = dat1 |> dplyr::filter(!is.na(predicted)),
+               aes(y = predicted, col = species), linewidth = 1.2)
 
 
 # add the predicted values of the model to the graph as a line
