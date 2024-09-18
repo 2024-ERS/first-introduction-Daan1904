@@ -83,23 +83,22 @@ psych::pairs.panels(envdat,smooth=F,ci=T,ellipses=F,stars=T,method="pearson")
 psych::pairs.panels(envdat,smooth=F,ci=T,ellipses=F,stars=T,method="spearman")
 # note that the units are very different! 
 
+
 ##### Ordination: run a Principal Component Analysis (PCA) on the environmental data
 # .scale=T means: use correlations instead of covariances
 # use .scale=T for datasets where the variables are measured in different use
 
-# first remove points with Na values (make rownames a column, filter and remove again)
-envdat1<-envdat |> 
-  dplyr::mutate(TransectPoint_ID=row.names(envdat)) |>
-  dplyr::filter(!TransectPoint_ID %in% c("1000", "1050", "1100","1150")) |>
-  dplyr::select(-TransectPoint_ID)
-
 # do a principal component analysis (pca) 
-
+pca_env <- prcomp(envdat, center = TRUE, scale. = TRUE) #Principal Component Analysis
+pca_env
+summary(pca_env)
+# show the site scores for axis 1
+pca_env$x
 
 # the PCs are reduced dimensions of the dataset
 # you reduce 6 variables to 2 dimensions
 # make a biplot (variable scores plus sample score) the pca ordination
-
+biplot(pca_env, xlab = "PC1 49%", ylab = "PC2 30%")
 
 ##### ordination: calculate and plot a Non-metric Multidimensional Scaling (NMDS) ordination
 # explore the distance (dissimilarity) in species composition between plots
