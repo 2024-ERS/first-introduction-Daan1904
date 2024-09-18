@@ -13,7 +13,8 @@ vegdat0<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSJFU7
   dplyr::select(-c(year,bare,litter,mosses,SalicSpp)) |>  # select  only distance_m and the species names as variable to use
   tibble::column_to_rownames(var="TransectPoint_ID") # convert distance_m to the row names of the tibble
 
-vegdat<-vegdat0 |> dplyr::select(which(colSums(vegdat0) != 0)) # remove species that did not occur in this year in any plot
+vegdat<-vegdat0 |> 
+  dplyr::select(which(colSums(vegdat0) != 0)) # remove species that did not occur in this year in any plot
 
 
 # read the macrotransect elevation data
@@ -24,14 +25,14 @@ elevdat
 
 # read the macrotransect clay thickness from the soil profile dataset
 claydat<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQyEg6KzIt6SdtSKLKbbL3AtPbVffq-Du-3RY9Xq0T9TwPRFcgvKAYKQx89CKWhpTKczPG9hKVGUfTw/pub?gid=943188085&single=true&output=csv") |>
-  dplyr::filter(Year==2024 & SoilType_ID %in% c("clay","clay-organic") & TransectPoint_ID<=900) |>
+  dplyr::filter(Year==2024 & SoilType_ID %in% c("clay","clay-organic") & TransectPoint_ID<=1150) |>
   dplyr::select(TransectPoint_ID,corrected_depth) |>     
   group_by(TransectPoint_ID) |> 
   dplyr::summarize(clay_cm=mean(corrected_depth,na.rm=T)) #calculate average clay layer thickness  for each pole
 claydat
 
 
-##### read the flooding proportion (proportion of the time of  the growing season flooded)
+##### read the flooding proportion (proportion of the time of the growing season flooded)
 # from 1 april - 30 aug
 flooddat<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTiJsz0xcUAhOjlTcHpT7NXhSysGMdzI6NfYm_kzpFtV99Eyea2up7dB-5a_P-jAKiwMBAXYURBTpRU/pub?gid=600890443&single=true&output=csv") |> 
   dplyr::filter(year==2023) |>
@@ -46,7 +47,7 @@ gulleydist
   
 # also add redox
 redox<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQyEg6KzIt6SdtSKLKbbL3AtPbVffq-Du-3RY9Xq0T9TwPRFcgvKAYKQx89CKWhpTKczPG9hKVGUfTw/pub?gid=1911552509&single=true&output=csv") |>
-  dplyr::filter(Year==2024,TransectPoint_ID<=900) %>%
+  dplyr::filter(Year==2023,TransectPoint_ID<=1150) %>%
   dplyr::group_by(TransectPoint_ID,ProbeDepth) %>%
   dplyr::summarize(redox_mV=mean(redox_raw2_mV,na.rm=T)) %>%
   tidyr::pivot_wider(id_cols=TransectPoint_ID,
