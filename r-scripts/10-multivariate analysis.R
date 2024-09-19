@@ -25,7 +25,7 @@ elevdat
 
 # read the macrotransect clay thickness from the soil profile dataset
 claydat<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQyEg6KzIt6SdtSKLKbbL3AtPbVffq-Du-3RY9Xq0T9TwPRFcgvKAYKQx89CKWhpTKczPG9hKVGUfTw/pub?gid=943188085&single=true&output=csv") |>
-  dplyr::filter(Year==2024 & SoilType_ID %in% c("clay","clay-organic") & TransectPoint_ID<=1150) |>
+  dplyr::filter(Year==2023 & SoilType_ID %in% c("clay","clay_organic") & TransectPoint_ID<=1150) |>
   dplyr::select(TransectPoint_ID,corrected_depth) |>     
   group_by(TransectPoint_ID) |> 
   dplyr::summarize(clay_cm=mean(corrected_depth,na.rm=T)) #calculate average clay layer thickness  for each pole
@@ -143,6 +143,7 @@ plot(ef_dca, add = TRUE)
 ##### add contour surfaces to the dca ordination for the relevant abiotic variables
 vegan::ordisurf(dca, envdat$clay_cm, add = TRUE, col = "green")
 vegan::ordisurf(dca, envdat$elevation_m, add = TRUE, col = "brown")
+vegan::ordisurf(dca, vegdat$PlantMar, add = TRUE, col = "blue")
 
 ##### make the same plot but using a nmds
 ##### fit the environmental factors to the nmds ordination surface
