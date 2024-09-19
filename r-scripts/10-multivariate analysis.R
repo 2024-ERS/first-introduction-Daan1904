@@ -143,7 +143,9 @@ plot(ef_dca, add = TRUE)
 ##### add contour surfaces to the dca ordination for the relevant abiotic variables
 vegan::ordisurf(dca, envdat$clay_cm, add = TRUE, col = "green")
 vegan::ordisurf(dca, envdat$elevation_m, add = TRUE, col = "brown")
-vegan::ordisurf(dca, vegdat$PlantMar, add = TRUE, col = "blue")
+
+# add a species contour
+vegan::ordisurf(dca, vegdat$FestuRub, add = TRUE, col = "blue")
 
 ##### make the same plot but using a nmds
 ##### fit the environmental factors to the nmds ordination surface
@@ -158,18 +160,37 @@ vegan::ordisurf(dca, vegdat$PlantMar, add = TRUE, col = "blue")
 ##### compare an unconstrainted (DCA) and constrained (CCA) ordination
 # did you miss important environmental factors?
 # show the results of the detrended correspondence analysis
+dca
 
 # the eigenvalues represent the variation explained by each axis
+names(envdat)
+cca1 <- vegan::cca(vegdat ~ elevation_m + DistGulley_m + floodprob + redox5 + redox10+ clay_cm,
+                  data = envdat)
+summary(cca1)
 
 # kick out variables that are least significant - simplify the model
+# check what is significant
+anova(cca1, by = "axis")
+anova(cca1, by = "margin")
 
+# redo with only important uncorrelated variables
+cca2 <- vegan::cca(vegdat ~ floodprob+ DistGulley_m, data = envdat)
+anova(cca2, by = "axis")
+anova(cca2, by = "margin")
 
 # add the environmental factors to the cca ordination plot
+vegan::ordiplot(cca2, display = "sites", cex = 1, type = "text",
+                xlab = "CCA1 (21%)", ylab = "CCA2 (14%)")
+vegan::orditorp(cca2, display = "species", priority = SpecTotCov, 
+                col = "red", pcol = "red", pch = "+", cex = 1.1)
+vegan::ordisurf(cca2, envdat$floodprob, add = TRUE, col = "blue")
+vegan::ordisurf(cca2, envdat$DistGulley_m, add = TRUE, col = "green")
 
 
 # test if the variables and axes (margins) are significant
+# See above...
 
-# You have measured the right things!
+
 # for example - test this if you would have only measured clay thickness
 
 # yes, clay thickness significantly affects vegetation composition
