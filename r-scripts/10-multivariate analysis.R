@@ -195,25 +195,47 @@ vegan::ordisurf(cca2, envdat$DistGulley_m, add = TRUE, col = "green")
 
 # yes, clay thickness significantly affects vegetation composition
 
+
+
 ##### cluster analysis (classification) of  communities
 # first calculate a dissimilarity matrix, using Bray-Curtis dissimilarity
-
+d <- vegan::vegdist(vegdat, method = "bray")
 
  # show the dissimilarity matrix (1= completely different, 0= exactly the same)
-
+d
 
 # now cluster the sites based on similarity in species composition 
 # using average linkage as the sorting algorithm
+cavg <- hclust(d, method = "average")
+plot(cavg)
 
-
-# back to  clustering based on species composition - show the dendrogram and cut in in 4 communities
+# show the dendrogram and cut in in 4 communities
+rect.hclust(cavg, 4)
+c4 <- cutree(cavg, 4)
+c4
 
 
 ##### add the clustering of plots to your cca ordination
+vegan::ordiplot(cca1, display = "sites", cex = 1, type = "text",
+                xlab = "CCA1 (21%)", ylab = "CCA2 (14%)")
+vegan::orditorp(cca1, display = "species", priority = SpecTotCov, 
+                col = "red", pcol = "red", pch = "+", cex = 1.1)
+vegan::ordihull(cca1, c4, lty = 2, col = "darkgreen", lwd = 2)
 
 #add the vegetation type to the environmental data
+envdat2 <- envdat |>
+  dplyr::mutate(vegtype = factor(c4))
+levels(envdat2$vegtype) <- -c("Dune", "High salt marsh", "Low salt marsh", "Pioneer zone")
 
 # test if DistGulley_m is different between the vegetation types
+p1 <- envdat2 |>
+  ggplot2::ggplot(aes(x = vegtype, y = floodprob)) +
+  geom_boxplot()+
+  xlab(NULL)
+p2 <- envdat2 |>
+  ggplot2::ggplot(aes(x = vegtype, y = clay_cm)) +
+  geom_boxplot()
+p1+ p2 + patchwork::plot_layout(ncol = 1)
 
 # what do you write: 
 # the vegetation types were significantly different in distance to gulley (F3,18=21.36, P<0.001)
