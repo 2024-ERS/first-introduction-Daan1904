@@ -70,6 +70,7 @@ m1 <- lm(Value ~ Treatment + Block + Treatment:Block, data = data)
 anova(m1)
 
 # now the correct model
+#using lme4, show a mixed model with fixed slopes (=effect of the treatment within each block) and random intercepts
 model1 <- lmerTest::lmer(Value ~ Treatment + (1|Block), data = data)
 summary(model1)
 coef(model1) # slope of treatment is the same for every block
@@ -78,13 +79,17 @@ ggplot(data, aes(x = Treatment, y = Value, color = Block)) +
   geom_line(aes(y = predict(model1)), size = 1)
 
 
-#using lme4, show a mixed model with fixed slopes (=effect of the treatment within each block) and random intercepts
-
-
 #using lme4, show a mixed model with random slopes and random intercepts
-
-
 # note that the effect of treatment is now also shown as a random effect 
-
 # plot this model with the data as points using ggplot and predicted values
+model2 <- lmerTest::lmer(Value ~ Treatment + (Treatment|Block), data = data)
+summary(model2)
+coef(model2) # slope of treatment is now different for every block
+ggplot(data, aes(x = Treatment, y = Value, color = Block)) +
+  geom_jitter(width = 0.15) +
+  geom_line(aes(y = predict(model2)), size = 1)
 
+
+# compare the models using AIC (Akaike's Information Criteria)
+# if at least value 2 lower (AIC), then often significantly different
+anova(model1, model2)
