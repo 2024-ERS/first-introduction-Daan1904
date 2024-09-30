@@ -129,6 +129,7 @@ dca
 
 # plot the dca results as a biplot
 vegan::ordiplot(dca, display = "sites", cex = 0.7, type = "text")
+
 vegan::orditorp(dca, display = "species", priority = SpecTotCov, 
                 col = "red", pcol = "red", pch = "+", cex = 0.8)
 
